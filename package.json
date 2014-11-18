@@ -1,0 +1,22 @@
+{
+  "name": "mediakit",
+  "version": "1.0.0",
+  "description": "Experimental media indexer, browser and search engine",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:joerx/mediakit.git"
+  },
+  "author": "Joerg Henning",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joerx/mediakit/issues"
+  },
+  "homepage": "https://github.com/joerx/mediakit",
+  "dependencies": {
+    "lodash": "^2.4.1"
+  }
+}
