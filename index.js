@@ -1,9 +1,28 @@
 var mediaScanner = require('./app/mediaScanner');
+var mediaRepo = require('./app/mediaRepo');
+var mm = require('musicmetadata');
+var fs = require('fs');
 
 var MEDIA_DIR = process.env.MEDIA_DIR || __dirname + '/media';
+var MONGO_DSN = process.env.MONGO_DSN || 'mongodb://localhost/media';
+
+var scanner, repo;
 
 scanner = mediaScanner(MEDIA_DIR);
-scanner.on('error', function(err) { console.error(err) });
-scanner.on('file', function(info) { console.log(info); });
+scanner.on('error', console.error);
+
+repo = mediaRepo({mongoDsn: MONGO_DSN});
+repo.on('error', console.error);
+repo.on('entry:created', function(entry) {
+  console.log('Media entry was created');
+  console.log(entry);
+});
+
+scanner.on('file', function(info) { 
+  var parser = mm(fs.createReadStream(info.path), {duration: true});
+  parser.on('metadata', function(result) {
+    repo.create(result);
+  });
+});
 
 scanner.scan();

@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/joerx/mediakit",
   "dependencies": {
-    "lodash": "^2.4.1"
+    "lodash": "^2.4.1",
+    "mongoose": "^3.8.19",
+    "musicmetadata": "^0.6.0"
   }
 }

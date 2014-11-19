@@ -41,7 +41,7 @@ module.exports = function mediaScanner(baseDir) {
         var info = _(stats)
           .pick('atime', 'mtime', 'ctime', 'size')
           .extend({
-            _path: _path,
+            path: _path,
             file: path.basename(_path)
           })
           .value();
