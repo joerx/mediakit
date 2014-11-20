@@ -6,8 +6,7 @@ var ObjectId = Schema.ObjectId;
 
 module.exports = function(config) {
 
-  var repo = Object.create(new EventEmitter());
-  
+  var repo = Object.create(null);
   mongoose.connect(config.mongoDsn)
 
   var MediaEntrySchema = new Schema({
@@ -29,15 +28,15 @@ module.exports = function(config) {
     repo.emit('error', err);
   }
 
-  repo.create = function create(data) {
+  repo.create = function create(data, done) {
     _.extend(data, {
       createdAt: new Date(),
       updatedAt: new Date()
     });
     var entry = new MediaEntry(data);
     entry.save(function(err, entry) {
-      if (err) return _bail(err);
-      repo.emit('entry:created', entry);
+      if (err) return done(err);
+      done(null, entry);
     });
   }
 

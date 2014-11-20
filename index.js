@@ -12,16 +12,14 @@ scanner = mediaScanner(MEDIA_DIR);
 scanner.on('error', console.error);
 
 repo = mediaRepo({mongoDsn: MONGO_DSN});
-repo.on('error', console.error);
-repo.on('entry:created', function(entry) {
-  console.log('Media entry was created');
-  console.log(entry);
-});
 
 scanner.on('file', function(info) { 
   var parser = mm(fs.createReadStream(info.path), {duration: true});
   parser.on('metadata', function(result) {
-    repo.create(result);
+    repo.create(result, function(err, entry) {
+      if (err) return console.error(err);
+      console.log(entry);
+    });
   });
 });
 
