@@ -32,12 +32,14 @@ module.exports = function mediaScanner(baseDir) {
         return emitter.emit('error', err);
       }
       if (stats.isDirectory()) {
+        console.log('[ENTER]', _path);
         return scandir(_path);
       }
       if (stats.isSymbolicLink()) {
         return; // don't follow
       }
       if (stats.isFile() && /mp3$/.test(_path)) {
+        console.log('[CHECK]', _path);
         var info = _(stats)
           .pick('atime', 'mtime', 'ctime', 'size')
           .extend({
@@ -47,12 +49,15 @@ module.exports = function mediaScanner(baseDir) {
           .value();
         return emitter.emit('file', info);
       }
+      console.log('[SKIP]', _path);
     });
   }
 
-  // scanner.scan(), scanner.on(), etc.
-  scanner.scan = scandir.bind(null, baseDir);
+  scanner.scan = function () {
+    scandir(baseDir);
+    console.log('[DONE]');
+  }
+  
   scanner.__proto__ = emitter;
-
   return scanner;
 }

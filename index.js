@@ -11,16 +11,19 @@ var scanner, repo;
 scanner = mediaScanner(MEDIA_DIR);
 scanner.on('error', console.error);
 
-repo = mediaRepo({mongoDsn: MONGO_DSN});
+repo = mediaRepo({mongoUrl: MONGO_DSN});
+repo.close();
 
 scanner.on('file', function(info) { 
-  var parser = mm(fs.createReadStream(info.path), {duration: true});
-  parser.on('metadata', function(result) {
-    repo.create(result, function(err, entry) {
-      if (err) return console.error(err);
-      console.log(entry);
-    });
-  });
+  console.log('.'); 
+  // console.log(info);
+  // var parser = mm(fs.createReadStream(info.path), {duration: true});
+  // parser.on('metadata', function(result) {
+  //   repo.create(result, function(err, entry) {
+  //     if (err) return console.error(err);
+  //     console.log(entry);
+  //   });
+  // });
 });
 
 scanner.scan();
